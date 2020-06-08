@@ -22,12 +22,23 @@ class Board:
         return symbol == SYM_X or symbol == SYM_O
 
     def take_move(self, symbol, position):
-        symbol = symbol.upper()
         position = position - 1
         self.board[position] = symbol
 
-    def check_tie(self):
+    def is_tie(self):
         for i in range(len(self.board)):
             if not is_spot_taken(i):
                 return False
         return True
+
+    def __magic_square_check(self, symbol, i, j, k):
+        if i != j and i != k and j != k:
+            if (board[i], board[j], board[k]) == (symbol, symbol, symbol):
+                if MAGIC_SQUARE[i] + MAGIC_SQUARE[j] + MAGIC_SQUARE[k] == 15:
+                    return True
+
+    def is_win(self, symbol):
+        for i in range(10):
+            for j in range(10):
+                for k in range(10):
+                    self.__magic_square_check(symbol, i, j, k)
