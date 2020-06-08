@@ -10,7 +10,7 @@ class Board:
         row1 = f"{self.board[0]} | {self.board[1]} | {self.board[2]}"
         row2 = f"{self.board[3]} | {self.board[4]} | {self.board[5]}"
         row3 = f"{self.board[6]} | {self.board[7]} | {self.board[8]}"
-        return f"{row1}\n{row2}\n{row3}"
+        return f"```{row1}\n{row2}\n{row3}```"
 
     def is_spot_taken(self, position):
         return isinstance(self.board[position], int)
