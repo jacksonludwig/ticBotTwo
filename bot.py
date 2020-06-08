@@ -16,16 +16,17 @@ async def on_ready():
     logging.info("bot running")
 
 
-@client.command()
+@client.command(aliases=['c'])
 async def clear(context):
     game_board = Board()
     await context.send(game_board.format_board())
 
 
 @client.command(aliases=['p'])
-async def play(context):
-    # TODO take turn
-    await context.send("take turn")
+async def play(context, symbol, position):
+    symbol, position = game_board.normalize_inputs(symbol, position)
+    game_board.take_move(symbol, position)
+    await context.send(game_board.format_board())
 
 
 def main():

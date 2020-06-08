@@ -12,6 +12,9 @@ class Board:
         row3 = f"{self.board[6]} | {self.board[7]} | {self.board[8]}"
         return f"```{row1}\n{row2}\n{row3}```"
 
+    def normalize_inputs(self, symbol, position):
+        return (symbol.upper(), int(position))
+
     def is_spot_taken(self, position):
         return isinstance(self.board[position], int)
 
