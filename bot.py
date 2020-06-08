@@ -22,8 +22,8 @@ async def clear(context):
     await context.send(game_board.format_board())
 
 
-@client.command(aliases=["play", 'p'])
-async def take_turn(context):
+@client.command(aliases=['p'])
+async def play(context):
     # TODO take turn
     await context.send("take turn")
 
