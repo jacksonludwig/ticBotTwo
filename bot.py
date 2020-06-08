@@ -1,9 +1,10 @@
 import discord
 from discord.ext import commands
+from board import Board
 
 import logging
 import json_reader
-from board import Board
+import board_connector
 
 client = commands.Bot(command_prefix="%")
 TOKEN = json_reader.get_token()
@@ -24,9 +25,22 @@ async def clear(context):
 
 @client.command(aliases=['p'])
 async def play(context, symbol, position):
-    symbol, position = game_board.normalize_inputs(symbol, position)
-    game_board.take_move(symbol, position)
-    await context.send(game_board.format_board())
+    symbol = symbol.upper()
+    if not board_connector.is_position_okay(position):
+        await context.send(board_connector.make_pos_error())
+    elif not board_connector.is_symbol_okay(symbol):
+        await context.send(board_connector.make_sym_error())
+    else:
+        position = int(position) - 1
+        if not game_board.is_spot_taken(position):
+            await context.send(board_connector.make_availablity_error())
+        else:
+            game_board.take_move(symbol, position)
+            await context.send(game_board.format_board())
+            if game_board.is_win(symbol):
+                await context.send(board_connector.win_print(symbol))
+            elif game_board.is_tie():
+                await context.send(board_connector.tie_print())
 
 
 def main():
