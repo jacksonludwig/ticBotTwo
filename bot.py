@@ -19,6 +19,7 @@ async def on_ready():
 
 @client.command(aliases=['c'])
 async def clear(context):
+    global game_board
     game_board = Board()
     await context.send(game_board.format_board())
 
