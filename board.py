@@ -23,9 +23,10 @@ class Board:
         return True
 
     def __magic_square_check(self, board, symbol, i, j, k):
+        MAGIC_SQUARE = self.MAGIC_SQUARE
         if i != j and i != k and j != k:
             if (board[i], board[j], board[k]) == (symbol, symbol, symbol):
-                if self.MAGIC_SQUARE[i] + self.MAGIC_SQUARE[j] + self.MAGIC_SQUARE[k] == 15:
+                if MAGIC_SQUARE[i] + MAGIC_SQUARE[j] + MAGIC_SQUARE[k] == 15:
                     return True
         return False
 
