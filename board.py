@@ -10,15 +10,16 @@ class Board:
         row3 = f"{self.board[6]} | {self.board[7]} | {self.board[8]}"
         return f"```{row1}\n{row2}\n{row3}```"
 
-    def is_spot_taken(self, position):
+    def is_spot_open(self, position):
         return isinstance(self.board[position], int)
 
     def take_move(self, symbol, position):
+        position = int(position) - 1
         self.board[position] = symbol
 
     def is_tie(self):
         for i in range(len(self.board)):
-            if not self.is_spot_taken(i):
+            if self.is_spot_open(i):
                 return False
         return True
 

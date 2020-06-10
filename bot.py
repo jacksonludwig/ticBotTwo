@@ -11,6 +11,11 @@ TOKEN = json_reader.get_token()
 
 game_board = Board()
 
+errors = [board_connector.check_for_sym_error,
+          board_connector.check_for_pos_error,
+          board_connector.check_for_range_error,
+          board_connector.check_for_avail_error]
+
 
 @client.event
 async def on_ready():
@@ -27,21 +32,14 @@ async def clear(context):
 @client.command(aliases=['p'])
 async def play(context, symbol, position):
     symbol = symbol.upper()
-    if not board_connector.is_position_okay(position):
-        await context.send(board_connector.make_pos_error())
-    elif not board_connector.is_symbol_okay(symbol):
-        await context.send(board_connector.make_sym_error())
-    else:
-        position = int(position) - 1
-        if not game_board.is_spot_taken(position):
-            await context.send(board_connector.make_availablity_error())
-        else:
-            game_board.take_move(symbol, position)
-            await context.send(game_board.format_board())
-            if game_board.is_win(symbol):
-                await context.send(board_connector.win_print(symbol))
-            elif game_board.is_tie():
-                await context.send(board_connector.tie_print())
+
+    if await board_connector.check_errors(errors, context, game_board,
+                                          symbol, position):
+        return
+
+    game_board.take_move(symbol, position)
+    await board_connector.send_board(context, game_board)
+    await board_connector.check_win_or_tie(context, game_board, symbol)
 
 
 def main():
